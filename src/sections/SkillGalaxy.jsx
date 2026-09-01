@@ -1,70 +1,64 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cpu, Code, Database, Globe } from 'lucide-react';
+import React from 'react';
+import { Terminal, ShieldAlert, Cpu, Lock, Flame } from 'lucide-react';
 
-const skillsData = [
-  { name: 'React / Next.js', category: 'Frontend', level: '95%', icon: Code, desc: 'Advanced component architecture, state management, and SSR optimization.' },
-  { name: 'Tailwind CSS', category: 'Styling', level: '92%', icon: Globe, desc: 'Responsive design, custom themes, glassmorphism, and fluid animations.' },
-  { name: 'HTML5 Canvas / WebGL', category: 'Visuals', level: '85%', icon: Cpu, desc: 'Custom particle systems, 3D transformations, and real-time graphics rendering.' },
-  { name: 'Node.js / Databases', category: 'Backend', level: '80%', icon: Database, desc: 'RESTful APIs, database schema design, and secure backend operations.' },
+const redTeamSkills = [
+  { name: 'Penetration Testing & Recon', level: '95%', icon: ShieldAlert, color: 'text-red-400' },
+  { name: 'Exploit Development & C2', level: '90%', icon: Terminal, color: 'text-red-400' },
+  { name: 'Network Infiltration & Pivoting', level: '88%', icon: Flame, color: 'text-amber-400' },
+  { name: 'Vulnerability Assessment', level: '92%', icon: Lock, color: 'text-red-400' },
+  { name: 'OSINT & Social Engineering', level: '85%', icon: Cpu, color: 'text-amber-400' },
 ];
 
 export default function SkillGalaxy() {
-  const [activeSkill, setActiveSkill] = useState(skillsData[0]);
-
   return (
-    <div className="glass-panel rounded-2xl p-5 border border-cosmic-purple/30 space-y-4 shadow-lg">
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
-        <h3 className="text-sm font-heading font-bold text-white tracking-widest flex items-center gap-2">
-          <Cpu size={16} className="text-cosmic-cyan" /> SKILL GALAXY
-        </h3>
-        <span className="text-[10px] font-mono text-cosmic-muted">SYSTEM SPECS</span>
+    <div 
+      id="skills"
+      className="glass-panel rounded-2xl p-5 border border-red-500/35 bg-space-card/25 backdrop-blur-md shadow-glow-red/10 space-y-4"
+    >
+      {/* Header Matrix */}
+      <div className="flex items-center justify-between border-b border-space-border/50 pb-3">
+        <div className="flex items-center gap-2">
+          <Terminal size={18} className="text-red-400 animate-pulse" />
+          <h3 className="font-heading font-bold text-xs md:text-sm tracking-wider text-white">
+            OFFENSIVE MATRIX // SKILLS
+          </h3>
+        </div>
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/15 border border-red-500/30 text-red-400">
+          RED_TEAM
+        </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        {skillsData.map((skill) => {
-          const IconComponent = skill.icon;
-          const isSelected = activeSkill.name === skill.name;
-
+      {/* Skills List */}
+      <div className="space-y-3 font-mono text-xs">
+        {redTeamSkills.map((skill, index) => {
+          const Icon = skill.icon;
           return (
-            <motion.button
-              key={skill.name}
-              onClick={() => setActiveSkill(skill)}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
-                isSelected
-                  ? 'bg-cosmic-cyan/15 border-cosmic-cyan/50 shadow-glow-cyan text-white'
-                  : 'bg-space-card/40 border-white/5 text-cosmic-muted hover:border-white/10 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <IconComponent size={16} className={isSelected ? 'text-cosmic-cyan' : 'text-cosmic-muted'} />
-                <span className="text-[10px] font-mono text-cosmic-cyan">{skill.level}</span>
+            <div key={index} className="space-y-1 bg-black/20 p-2.5 rounded-xl border border-white/5 hover:border-red-500/30 transition-all">
+              <div className="flex justify-between items-center text-slate-200">
+                <span className="flex items-center gap-2">
+                  <Icon size={14} className={skill.color} />
+                  <span className="font-semibold text-[11px]">{skill.name}</span>
+                </span>
+                <span className={`text-[10px] font-bold ${skill.color}`}>{skill.level}</span>
               </div>
-              <span className="text-xs font-bold tracking-wide">{skill.name}</span>
-            </motion.button>
+              
+              {/* Progress Bar */}
+              <div className="w-full h-1.5 bg-space-card rounded-full overflow-hidden border border-white/5">
+                <div 
+                  className="h-full bg-gradient-to-r from-red-600 to-amber-500 rounded-full" 
+                  style={{ width: skill.level }}
+                />
+              </div>
+            </div>
           );
         })}
       </div>
 
-      {/* Panel Detail Skill Terpilih */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeSkill.name}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="p-3 rounded-lg bg-space-bg/60 border border-cosmic-cyan/20 space-y-1 font-mono text-xs"
-        >
-          <div className="flex justify-between text-[10px] text-cosmic-cyan">
-            <span>DOMAIN: {activeSkill.category.toUpperCase()}</span>
-            <span>PROFICIENCY: {activeSkill.level}</span>
-          </div>
-          <p className="text-cosmic-text text-[11px] leading-relaxed pt-1">{activeSkill.desc}</p>
-        </motion.div>
-      </AnimatePresence>
+      {/* Footer Info */}
+      <div className="pt-2 border-t border-space-border/50 flex justify-between items-center text-[10px] font-mono text-cosmic-muted">
+        <span>STATUS: SYSTEM BREACH READY</span>
+        <span className="text-red-400 font-bold">AUTHORIZED ONLY</span>
+      </div>
     </div>
   );
 }

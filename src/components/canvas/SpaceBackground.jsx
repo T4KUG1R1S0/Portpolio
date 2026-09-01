@@ -7,140 +7,101 @@ export default function SpaceBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let animationFrameId;
 
+    let animationFrameId;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Partikel Bintang / Light Dust
-    const particles = Array.from({ length: 90 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 2 + 0.5,
-      speedX: (Math.random() - 0.5) * 0.4,
-      speedY: (Math.random() - 0.5) * 0.4,
-      alpha: Math.random() * 0.8 + 0.2,
-    }));
-
-    // Sumbu Titik Sudut Tesseract 4D
-    const tesseractVertices = [
-      [-1, -1, -1, -1], [1, -1, -1, -1], [1, 1, -1, -1], [-1, 1, -1, -1],
-      [-1, -1, 1, -1], [1, -1, 1, -1], [1, 1, 1, -1], [-1, 1, 1, -1],
-      [-1, -1, -1, 1], [1, -1, -1, 1], [1, 1, -1, 1], [-1, 1, -1, 1],
-      [-1, -1, 1, 1], [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1],
-    ];
-
-    // Koneksi Antar Titik Tesseract 4D
-    const edges = [];
-    for (let i = 0; i < 16; i++) {
-      for (let j = i + 1; j < 16; j++) {
-        let diff = 0;
-        for (let k = 0; k < 4; k++) {
-          if (tesseractVertices[i][k] !== tesseractVertices[j][k]) diff++;
-        }
-        if (diff === 1) edges.push([i, j]);
-      }
-    }
-
-    let angleX = 0;
-    let angleY = 0;
-
-    const resize = () => {
+    const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', handleResize);
+
+    // Konfigurasi Bintang & Partikel Kosmik Red Team
+    const starsCount = Math.floor((width * height) / 6000);
+    const stars = Array.from({ length: starsCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 1.8,
+      alpha: Math.random(),
+      speed: Math.random() * 0.015 + 0.003,
+      // Kombinasi warna merah menyala, amber, dan putih dingin
+      color: Math.random() > 0.75 
+        ? 'rgba(239, 68, 68, ' 
+        : Math.random() > 0.5 
+        ? 'rgba(245, 158, 11, ' 
+        : 'rgba(255, 255, 255, '
+    }));
+
+    // Konfigurasi Debu Kosmik / Nebula Melayang
+    const dustParticles = Array.from({ length: 15 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 120 + 60,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      alpha: Math.random() * 0.05 + 0.02
+    }));
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // 1. DYNAMIC NEBULA LIGHTING (Pencahayaan Terang Cyan & Purple)
-      const gradient1 = ctx.createRadialGradient(
-        width * 0.2, height * 0.3, 50,
-        width * 0.2, height * 0.3, width * 0.6
-      );
-      gradient1.addColorStop(0, 'rgba(6, 182, 212, 0.28)'); // Cyan Neon Glow
-      gradient1.addColorStop(1, 'transparent');
-
-      const gradient2 = ctx.createRadialGradient(
-        width * 0.8, height * 0.7, 50,
-        width * 0.8, height * 0.7, width * 0.6
-      );
-      gradient2.addColorStop(0, 'rgba(168, 85, 247, 0.25)'); // Cosmic Purple Glow
-      gradient2.addColorStop(1, 'transparent');
-
-      ctx.fillStyle = gradient1;
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = gradient2;
+      // 1. Gambar Nebula Radial di Latar Belakang (Nuansa Red Team / Cyber)
+      const primaryGlow = ctx.createRadialGradient(width * 0.8, height * 0.2, 100, width * 0.8, height * 0.2, width * 0.7);
+      primaryGlow.addColorStop(0, 'rgba(220, 38, 38, 0.15)'); // Red glow utama
+      primaryGlow.addColorStop(0.5, 'rgba(126, 34, 206, 0.08)'); // Ungu kosmik
+      primaryGlow.addColorStop(1, 'rgba(3, 7, 18, 0)');
+      ctx.fillStyle = primaryGlow;
       ctx.fillRect(0, 0, width, height);
 
-      // 2. ANIMASI PARTIKEL BINTANG
-      particles.forEach((p) => {
-        p.x += p.speedX;
-        p.y += p.speedY;
+      const secondaryGlow = ctx.createRadialGradient(width * 0.2, height * 0.8, 50, width * 0.2, height * 0.8, width * 0.6);
+      secondaryGlow.addColorStop(0, 'rgba(245, 158, 11, 0.08)'); // Amber glow sekunder
+      secondaryGlow.addColorStop(1, 'rgba(3, 7, 18, 0)');
+      ctx.fillStyle = secondaryGlow;
+      ctx.fillRect(0, 0, width, height);
 
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+      // 2. Render Debu Kosmik / Awan Nebula Bergerak Perlahan
+      dustParticles.forEach((dust) => {
+        dust.x += dust.vx;
+        dust.y += dust.vy;
 
+        if (dust.x < -100) dust.x = width + 100;
+        if (dust.x > width + 100) dust.x = -100;
+        if (dust.y < -100) dust.y = height + 100;
+        if (dust.y > height + 100) dust.y = -100;
+
+        const dustGrad = ctx.createRadialGradient(dust.x, dust.y, 0, dust.x, dust.y, dust.radius);
+        dustGrad.addColorStop(0, `rgba(239, 68, 68, ${dust.alpha})`);
+        dustGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = dustGrad;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(165, 243, 252, ${p.alpha})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#06b6d4';
+        ctx.arc(dust.x, dust.y, dust.radius, 0, Math.PI * 2);
         ctx.fill();
-        ctx.shadowBlur = 0;
       });
 
-      // 3. PROYEKSI & ROTASI TESSERACT 4D GEOMETRY
-      angleX += 0.006;
-      angleY += 0.004;
-
-      const projected = tesseractVertices.map((v) => {
-        // Rotasi Sumbu 4D (ZW & XW)
-        let x = v[0], y = v[1], z = v[2], w = v[3];
-
-        // Rotasi ZW
-        let cos = Math.cos(angleX), sin = Math.sin(angleX);
-        let z1 = z * cos - w * sin;
-        let w1 = z * sin + w * cos;
-
-        // Rotasi XW
-        cos = Math.cos(angleY); sin = Math.sin(angleY);
-        let x1 = x * cos - w1 * sin;
-        let w2 = x * sin + w1 * cos;
-
-        // Proyeksi 4D ke 3D
-        const distance4D = 2.5;
-        const wFactor = 1 / (distance4D - w2);
-        x1 *= wFactor;
-        y *= wFactor;
-        z1 *= wFactor;
-
-        // Proyeksi 3D ke 2D Layar
-        const scale = Math.min(width, height) * 0.28;
-        return {
-          x: width / 2 + x1 * scale,
-          y: height / 2 + y * scale,
-        };
-      });
-
-      // Render Garis Wireframe 4D dengan Glow Effect
-      ctx.lineWidth = 1.2;
-      edges.forEach(([i, j]) => {
-        const p1 = projected[i];
-        const p2 = projected[j];
+      // 3. Render Bintang & Efek Kedipan (Twinkle)
+      stars.forEach((star) => {
+        star.alpha += star.speed;
+        if (star.alpha > 1 || star.alpha < 0.15) {
+          star.speed = -star.speed;
+        }
 
         ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)'; // Line Cyan Vibrant
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#06b6d4';
-        ctx.stroke();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `${star.color}${Math.abs(star.alpha)})`;
+        
+        // Berikan efek glow/shadow pada bintang berukuran lebih besar
+        if (star.radius > 1.2) {
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = star.color.includes('239') ? '#ef4444' : star.color.includes('245') ? '#f59e0b' : '#ffffff';
+        } else {
+          ctx.shadowBlur = 0;
+        }
+        
+        ctx.fill();
+        ctx.shadowBlur = 0; // Reset
       });
-      ctx.shadowBlur = 0;
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -148,15 +109,18 @@ export default function SpaceBackground() {
     render();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none -z-10 bg-[#080d1a]"
-    />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#030712]">
+      {/* Canvas Utama Galaksi & Nebula */}
+      <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full" />
+      
+      {/* Cyber Grid Overlay (Efek Hologram Grid Tipis di atas background) */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ef444408_1px,transparent_1px),linear-gradient(to_bottom,#ef444408_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_60%,transparent_100%)]" />
+    </div>
   );
 }

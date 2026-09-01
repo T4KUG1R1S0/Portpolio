@@ -67,3 +67,8 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #7C5CFF;
 }
+
+.glass-panel, div[class*="bg-space-card"] {
+  background-color: rgba(10, 14, 26, 0.2) !important;
+  backdrop-filter: blur(8px) !important;
+}

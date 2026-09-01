@@ -1,90 +1,110 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, ChevronDown, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Terminal, ShieldAlert, ChevronDown, CheckCircle2 } from 'lucide-react';
 
-const missions = [
+const redTeamMissions = [
   {
     id: 'LOG-01',
-    title: 'Deployment of Hypercube Engine',
-    date: 'STARDATE 2026.1',
+    title: 'Adversary Simulation & C2 Infrastructure',
     status: 'SUCCESS',
-    detail: 'Successfully integrated 4D Tesseract projection with responsive dynamic lighting and zero frame drops.',
+    date: '2025.Q4',
+    description: 'Deployed resilient Command and Control (C2) servers behind multi-layered redirectors to execute red team engagements with zero attribution.'
   },
   {
     id: 'LOG-02',
-    title: 'Orbital Navigation Stabilization',
-    date: 'STARDATE 2026.2',
+    title: 'External Perimeter Infiltration & Exploitation',
     status: 'SUCCESS',
-    detail: 'Resolved component positioning and fixed state synchronization on the interactive project orbit nodes.',
+    date: '2025.Q3',
+    description: 'Successfully bypassed perimeter firewalls via custom payload delivery, performing lateral movement and privilege escalation inside target domain.'
   },
   {
     id: 'LOG-03',
-    title: 'Deep Space Cosmic UI Expansion',
-    date: 'STARDATE 2026.3',
+    title: 'Advanced Social Engineering & OSINT Recon',
     status: 'IN PROGRESS',
-    detail: 'Upgrading background rendering to include realistic multi-color spiral galaxies and interactive cursor tracking.',
-  },
+    date: '2026.Q1',
+    description: 'Executing comprehensive threat intelligence gathering, spear-phishing campaigns, and credential harvesting simulations for enterprise security audit.'
+  }
 ];
 
 export default function MissionLog() {
-  const [activeLog, setActiveLog] = useState('LOG-03');
+  const [expandedId, setExpandedId] = useState('LOG-03');
+
+  const toggleExpand = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
 
   return (
-    <div className="glass-panel rounded-2xl p-6 border border-cosmic-purple/30 space-y-4">
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
-        <h3 className="text-sm font-heading font-bold text-white tracking-widest flex items-center gap-2">
-          <Terminal size={16} className="text-cosmic-cyan" /> MISSION LOGS
-        </h3>
-        <span className="text-[10px] font-mono text-cosmic-muted">ENCRYPTED ARCHIVE</span>
+    <div 
+      id="mission"
+      className="glass-panel rounded-2xl p-5 border border-red-500/35 bg-space-card/25 backdrop-blur-md shadow-glow-red/10 space-y-4"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-space-border/50 pb-3">
+        <div className="flex items-center gap-2">
+          <Terminal size={18} className="text-red-400 animate-pulse" />
+          <h3 className="font-heading font-bold text-xs md:text-sm tracking-wider text-white">
+            MISSION LOGS // OFFENSIVE ARCHIVE
+          </h3>
+        </div>
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/15 border border-red-500/30 text-red-400">
+          CLASSIFIED
+        </span>
       </div>
 
-      <div className="space-y-3">
-        {missions.map((mission) => {
-          const isOpen = activeLog === mission.id;
+      {/* Mission Items */}
+      <div className="space-y-2.5 font-mono text-xs">
+        {redTeamMissions.map((mission) => {
+          const isExpanded = expandedId === mission.id;
+          const isSuccess = mission.status === 'SUCCESS';
 
           return (
-            <div
-              key={mission.id}
-              className={`rounded-xl border transition-all duration-300 overflow-hidden ${
-                isOpen ? 'bg-space-bg/80 border-cosmic-cyan/40 shadow-glow-cyan' : 'bg-space-card/40 border-white/5 hover:border-white/10'
-              }`}
+            <div 
+              key={mission.id} 
+              className="bg-black/20 rounded-xl border border-white/5 overflow-hidden transition-all hover:border-red-500/30"
             >
               <button
-                onClick={() => setActiveLog(isOpen ? null : mission.id)}
-                className="w-full p-4 flex items-center justify-between text-left"
+                onClick={() => toggleExpand(mission.id)}
+                className="w-full p-3 flex items-center justify-between text-left cursor-pointer"
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-cosmic-cyan">{mission.id}</span>
-                  <span className="text-xs font-bold text-white tracking-wide">{mission.title}</span>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-[10px] text-red-400 font-bold">{mission.id}</span>
+                  <span className="text-slate-200 font-semibold text-[11px] truncate max-w-[200px] md:max-w-xs">
+                    {mission.title}
+                  </span>
                 </div>
+                
                 <div className="flex items-center gap-2">
-                  <span className={`text-[9px] font-mono px-2 py-0.5 rounded ${mission.status === 'SUCCESS' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                  <span className={`text-[9px] px-2 py-0.5 rounded border font-bold ${
+                    isSuccess 
+                      ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' 
+                      : 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                  }`}>
                     {mission.status}
                   </span>
-                  <ChevronDown size={14} className={`text-cosmic-muted transition-transform duration-300 ${isOpen ? 'rotate-180 text-cosmic-cyan' : ''}`} />
+                  <ChevronDown 
+                    size={14} 
+                    className={`text-cosmic-muted transition-transform duration-200 ${isExpanded ? 'rotate-180 text-red-400' : ''}`} 
+                  />
                 </div>
               </button>
 
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="px-4 pb-4 pt-1 border-t border-white/5 text-xs text-cosmic-muted space-y-2 font-mono"
-                  >
-                    <div className="flex justify-between text-[10px] text-cosmic-cyan/70">
-                      <span>TIMESTAMP: {mission.date}</span>
-                      <span>SEC_LEVEL: ALPHA</span>
-                    </div>
-                    <p className="leading-relaxed text-cosmic-text">{mission.detail}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {isExpanded && (
+                <div className="px-3 pb-3 pt-1 border-t border-white/5 text-slate-300 space-y-2 text-[11px]">
+                  <div className="flex justify-between text-[10px] text-cosmic-muted">
+                    <span>TIMELINE: {mission.date}</span>
+                    <span className="text-red-400">OPERATIONAL CLEARANCE</span>
+                  </div>
+                  <p className="leading-relaxed">{mission.description}</p>
+                </div>
+              )}
             </div>
           );
         })}
+      </div>
+
+      {/* Footer */}
+      <div className="pt-2 border-t border-space-border/50 flex justify-between items-center text-[10px] font-mono text-cosmic-muted">
+        <span>TOTAL ENGAGEMENTS: 3 ACTIVE</span>
+        <span className="text-red-400 font-bold">SECURE ENCRYPTION</span>
       </div>
     </div>
   );

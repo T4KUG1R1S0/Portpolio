@@ -3,21 +3,20 @@ import { motion } from 'framer-motion';
 import { Home, Layers, Terminal, Cpu, Mail } from 'lucide-react';
 
 const navItems = [
-  { id: 'hero', label: 'HOME', icon: Home, href: '#' },
-  { id: 'projects', label: 'PROJECTS', icon: Layers, href: '#projects' },
-  { id: 'mission', label: 'LOGS', icon: Terminal, href: '#mission' },
-  { id: 'skills', label: 'SKILLS', icon: Cpu, href: '#skills' },
-  { id: 'contact', label: 'TRANSMIT', icon: Mail, href: '#contact' },
+  { id: 'hero', label: 'HOME', icon: Home },
+  { id: 'projects', label: 'VAULT', icon: Layers },
+  { id: 'mission', label: 'LOGS', icon: Terminal },
+  { id: 'skills', label: 'ARSENAL', icon: Cpu },
+  { id: 'contact', label: 'COMMS', icon: Mail },
 ];
 
 export default function FloatingDock() {
   const [activeSection, setActiveSection] = useState('hero');
 
-  // Auto-detect active section saat user scroll (ScrollSpy)
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map((item) => item.id);
-      const scrollPosition = window.scrollY + 200;
+      const scrollPosition = window.scrollY + 300;
 
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
@@ -36,43 +35,65 @@ export default function FloatingDock() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleNavClick = (e, id) => {
+    e.preventDefault();
+    setActiveSection(id);
+
+    if (id === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const targetElement = document.getElementById(id);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
   return (
-    <motion.div
-      initial={{ y: 80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
+    <div 
+      style={{
+        position: 'fixed',
+        bottom: '24px',
+        left: '0px',
+        right: '0px',
+        margin: '0 auto',
+        width: 'fit-content',
+        zIndex: 99999,
+        pointerEvents: 'none',
+      }}
     >
-      <div className="glass-panel rounded-full p-2 flex items-center justify-center gap-1 md:gap-2 border border-cosmic-purple/40 shadow-glow-purple backdrop-blur-2xl bg-space-card/85">
+      <motion.div
+        initial={{ y: 80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+        style={{ pointerEvents: 'auto' }}
+        className="rounded-full p-2 flex items-center justify-center gap-1 md:gap-2 border border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.15)] backdrop-blur-md bg-black/60"
+      >
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeSection === item.id;
 
           return (
             <div key={item.id} className="relative flex flex-col items-center justify-center">
-              <motion.a
-                href={item.href}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveSection(item.id)}
-                className={`relative px-3 md:px-4 py-2 rounded-full flex items-center justify-center gap-2 text-xs font-mono transition-colors duration-200 border ${
+              <button
+                onClick={(e) => handleNavClick(e, item.id)}
+                className={`relative px-3 md:px-4 py-2 rounded-full flex items-center justify-center gap-2 text-xs font-mono transition-all duration-200 border cursor-pointer ${
                   isActive
-                    ? 'text-cosmic-cyan bg-cosmic-cyan/15 border-cosmic-cyan/40 shadow-glow-cyan'
-                    : 'text-cosmic-muted hover:text-white hover:bg-white/5 border-transparent'
+                    ? 'text-red-400 bg-red-500/20 border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]'
+                    : 'text-cosmic-muted hover:text-white hover:bg-white/10 border-transparent'
                 }`}
               >
-                <Icon size={18} className={isActive ? 'animate-pulse' : ''} />
+                <Icon size={18} className={isActive ? 'animate-pulse text-red-400' : ''} />
                 <span className="hidden md:inline-block tracking-wider font-semibold">
                   {item.label}
                 </span>
-              </motion.a>
+              </button>
 
-              {/* Smooth Animated Active Dot */}
               {isActive && (
                 <div className="absolute -bottom-1.5 inset-x-0 flex justify-center items-center pointer-events-none">
                   <motion.span
                     layoutId="activeDockDot"
-                    className="w-1.5 h-1.5 rounded-full bg-cosmic-cyan shadow-glow-cyan"
+                    className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"
                     transition={{ type: 'spring', stiffness: 400, damping: 28 }}
                   />
                 </div>
@@ -80,7 +101,7 @@ export default function FloatingDock() {
             </div>
           );
         })}
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }

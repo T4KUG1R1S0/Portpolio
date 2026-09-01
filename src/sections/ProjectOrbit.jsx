@@ -1,147 +1,89 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Code2, GitBranch } from 'lucide-react';
+import React from 'react';
+import { Layers, Terminal, ShieldAlert, ExternalLink, GitBranch } from 'lucide-react';
 
-const projectsData = [
+const redTeamProjects = [
   {
-    id: '01',
-    title: 'Cosmic Security Scanner',
-    category: 'CYBERSECURITY / AI',
-    description: 'Real-time threat detection system with cosmic visual dashboard and automated response protocols.',
-    tags: ['Python', 'React', 'Tailwind'],
-    status: 'COMPLETED',
-    liveUrl: '#',
-    githubUrl: '#',
+    title: 'Project Cerberus // C2 Framework',
+    category: 'Command & Control',
+    description: 'Custom resilient C2 architecture built with encrypted communication channels, modular payload delivery, and automated traffic obfuscation.',
+    tech: ['Python', 'Go', 'WebSocket', 'AES-256'],
+    status: 'DEPLOYED'
   },
   {
-    id: '02',
-    title: 'Galactic Commerce Hub',
-    category: 'FULLSTACK / E-COMMERCE',
-    description: 'High-performance decentralized trading interface built for seamless interplanetary transactions.',
-    tags: ['Next.js', 'TypeScript', 'Prisma'],
-    status: 'IN DEVELOPMENT',
-    liveUrl: '#',
-    githubUrl: '#',
+    title: 'Aegis Breach // Exploit Automation',
+    category: 'Penetration Testing',
+    description: 'Automated vulnerability scanner and exploit chain orchestrator designed for rapid internal network reconnaissance and privilege escalation validation.',
+    tech: ['Rust', 'Bash', 'Docker', 'Metasploit API'],
+    status: 'ACTIVE'
   },
   {
-    id: '03',
-    title: 'Nebula Analytics Dashboard',
-    category: 'DATA VISUALIZATION',
-    description: 'Interactive telemetry data renderer powered by HTML5 Canvas and WebGL shaders.',
-    tags: ['React', 'Three.js', 'Tailwind'],
-    status: 'COMPLETED',
-    liveUrl: '#',
-    githubUrl: '#',
-  },
+    title: 'PhishMatrix // Social Engineering Suite',
+    category: 'Adversary Simulation',
+    description: 'Advanced credential harvesting simulation platform featuring dynamic phishing templates, real-time tracking, and bypass for modern MFA tokens.',
+    tech: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
+    status: 'COMPLETED'
+  }
 ];
 
 export default function ProjectOrbit() {
-  const [selectedProject, setSelectedProject] = useState(projectsData[0]);
-
   return (
-    <div className="w-full space-y-6">
-      {/* 1. Orbit Visual Interactive */}
-      <div className="glass-panel rounded-2xl p-6 relative overflow-hidden flex items-center justify-center min-h-[320px]">
-        <div className="absolute w-20 h-20 rounded-full bg-cosmic-cyan/10 blur-xl animate-pulse" />
-        <div className="absolute w-64 h-64 md:w-80 md:h-80 rounded-full border border-cosmic-purple/30 border-dashed animate-[spin_60s_linear_infinite]" />
-
-        {/* Inti Pusat */}
-        <div className="relative z-10 w-16 h-16 rounded-2xl glass-panel border border-cosmic-cyan/50 flex items-center justify-center shadow-glow-cyan bg-space-bg/80">
-          <Code2 className="text-cosmic-cyan animate-pulse" size={28} />
+    <div 
+      id="projects" 
+      className="glass-panel rounded-2xl p-5 border border-red-500/35 bg-space-card/25 backdrop-blur-md shadow-glow-red/10 space-y-4"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-space-border/50 pb-3">
+        <div className="flex items-center gap-2">
+          <Layers size={18} className="text-red-400 animate-pulse" />
+          <h3 className="font-heading font-bold text-xs md:text-sm tracking-wider text-white">
+            PROJECT ORBIT // OFFENSIVE TOOLS
+          </h3>
         </div>
-
-        {/* Planet Node Mengorbit (01, 02, 03) */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          {projectsData.map((project, index) => {
-            const isSelected = selectedProject.id === project.id;
-            const angles = [-60, 180, 60];
-            const angle = angles[index];
-            const radius = 130;
-            const x = Math.cos((angle * Math.PI) / 180) * radius;
-            const y = Math.sin((angle * Math.PI) / 180) * radius;
-
-            return (
-              <motion.button
-                key={project.id}
-                onClick={() => setSelectedProject(project)}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                style={{
-                  transform: `translate(${x}px, ${y}px)`,
-                }}
-                className={`absolute w-12 h-12 rounded-full font-mono text-xs font-bold transition-all duration-300 flex items-center justify-center z-20 ${
-                  isSelected
-                    ? 'bg-cosmic-cyan text-space-bg shadow-glow-cyan ring-4 ring-cosmic-cyan/30'
-                    : 'glass-panel text-cosmic-muted hover:text-white hover:border-cosmic-cyan/50'
-                }`}
-              >
-                {project.id}
-              </motion.button>
-            );
-          })}
-        </div>
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/15 border border-red-500/30 text-red-400">
+          SECURE_VAULT
+        </span>
       </div>
 
-      {/* 2. Kartu Detail Project Terpilih */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selectedProject.id}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -15 }}
-          transition={{ duration: 0.25 }}
-          className="glass-panel rounded-xl p-5 border border-cosmic-purple/30 space-y-4"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono tracking-widest text-cosmic-cyan uppercase px-2 py-0.5 rounded bg-cosmic-cyan/10 border border-cosmic-cyan/20">
-              {selectedProject.category}
-            </span>
-            <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              {selectedProject.status}
-            </span>
-          </div>
+      {/* Projects List */}
+      <div className="space-y-3 font-mono text-xs">
+        {redTeamProjects.map((project, index) => (
+          <div 
+            key={index} 
+            className="bg-black/20 p-3.5 rounded-xl border border-white/5 hover:border-red-500/40 transition-all space-y-2.5 group"
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-[9px] text-red-400 font-bold uppercase tracking-wider">{project.category}</span>
+                <h4 className="font-heading font-bold text-slate-100 text-[13px] group-hover:text-red-400 transition-colors">
+                  {project.title}
+                </h4>
+              </div>
+              <span className="text-[9px] px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-red-400 font-bold">
+                {project.status}
+              </span>
+            </div>
 
-          <div>
-            <h3 className="text-lg font-bold text-white tracking-wide">
-              {selectedProject.title}
-            </h3>
-            <p className="text-xs text-cosmic-muted mt-1 leading-relaxed">
-              {selectedProject.description}
+            <p className="text-slate-300 text-[11px] leading-relaxed">
+              {project.description}
             </p>
-          </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/5">
-            <div className="flex gap-2">
-              {selectedProject.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[10px] font-mono px-2 py-0.5 rounded bg-space-card text-cosmic-muted border border-white/5"
-                >
-                  {tag}
+            {/* Tech Tags */}
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {project.tech.map((t, i) => (
+                <span key={i} className="text-[9px] px-2 py-0.5 rounded bg-white/5 text-cosmic-muted border border-white/5">
+                  {t}
                 </span>
               ))}
             </div>
-
-            <div className="flex items-center gap-3 text-cosmic-muted">
-              <a
-                href={selectedProject.githubUrl}
-                className="hover:text-cosmic-cyan transition-colors"
-                title="Repository Source"
-              >
-                <GitBranch size={16} />
-              </a>
-              <a
-                href={selectedProject.liveUrl}
-                className="hover:text-cosmic-cyan transition-colors"
-                title="Live Preview"
-              >
-                <ExternalLink size={16} />
-              </a>
-            </div>
           </div>
-        </motion.div>
-      </AnimatePresence>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="pt-2 border-t border-space-border/50 flex justify-between items-center text-[10px] font-mono text-cosmic-muted">
+        <span>ORBIT STATUS: STABLE</span>
+        <span className="text-red-400 font-bold">CLASSIFIED REPO</span>
+      </div>
     </div>
   );
 }
