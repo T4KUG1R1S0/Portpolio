@@ -1,16 +1,39 @@
-# React + Vite
+# GALAXY PORTFOLIO // RED TEAM EDITION
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, high-tech, cyber-warfare themed personal portfolio built with **React**, **Vite**, and **Tailwind CSS**. Designed with a futuristic glassmorphism aesthetic tailored for offensive security operators and cybersecurity professionals.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## // TECH STACK
 
-## React Compiler
+* **Core:** React, Vite
+* **Styling:** Tailwind CSS, Custom Glassmorphism UI
+* **Icons:** Lucide React
+* **Typography:** System UI & Monospace Terminal Fonts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## // KEY COMPONENTS
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **ProfilePanel (`#hero`):** System status display, operator clearance level, and core professional summary.
+* **SkillGalaxy (`#skills`):** Interactive offensive matrix showing proficiency levels in penetration testing, C2 development, OSINT, and vulnerability assessment.
+* **TransmissionCenter (`#contact`):** Secure communication channels (GitHub, Network/Web, Secure Mail) and an encrypted direct dispatch form.
+* **Floating Dock:** Smooth-scrolling navigation bar providing instant access across all operational sectors.
+
+---
+
+## // PROJECT STRUCTURE
+
+```text
+galaxy-portfolio/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── ProfilePanel.jsx
+│   │   ├── SkillGalaxy.jsx
+│   │   └── TransmissionCenter.jsx
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── package.json
+└── README.md
