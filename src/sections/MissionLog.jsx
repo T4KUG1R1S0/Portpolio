@@ -1,74 +1,68 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, ChevronDown, Rocket, Compass, Target } from 'lucide-react';
+import { Terminal, ChevronDown, CheckCircle2, AlertCircle } from 'lucide-react';
 
-const logs = [
+const missions = [
   {
-    id: '01',
-    title: 'WHO I AM',
-    icon: Compass,
-    content: 'Informatics Engineering student passionate about crafting sleek digital interfaces, interactive experiences, and robust back-end logic. I treat every project as an exploration into new technological frontiers.',
+    id: 'LOG-01',
+    title: 'Deployment of Hypercube Engine',
+    date: 'STARDATE 2026.1',
+    status: 'SUCCESS',
+    detail: 'Successfully integrated 4D Tesseract projection with responsive dynamic lighting and zero frame drops.',
   },
   {
-    id: '02',
-    title: 'WHAT I DO',
-    icon: Target,
-    content: 'Specializing in Modern Web Development (React, Next.js, Tailwind CSS), API Architecture, and Cyber Defense fundamentals. Focused on clean code, micro-interactions, and visual precision.',
+    id: 'LOG-02',
+    title: 'Orbital Navigation Stabilization',
+    date: 'STARDATE 2026.2',
+    status: 'SUCCESS',
+    detail: 'Resolved component positioning and fixed state synchronization on the interactive project orbit nodes.',
   },
   {
-    id: '03',
-    title: 'MISSION STATEMENT',
-    icon: Rocket,
-    content: 'To engineer immersive, high-performance web applications that bridge complex technical logic with intuitive, human-centered UI/UX.',
+    id: 'LOG-03',
+    title: 'Deep Space Cosmic UI Expansion',
+    date: 'STARDATE 2026.3',
+    status: 'IN PROGRESS',
+    detail: 'Upgrading background rendering to include realistic multi-color spiral galaxies and interactive cursor tracking.',
   },
 ];
 
 export default function MissionLog() {
-  const [openLog, setOpenLog] = useState('01');
+  const [activeLog, setActiveLog] = useState('LOG-03');
 
   return (
-    <div className="glass-panel rounded-2xl p-6 space-y-4">
-      {/* Module Title */}
-      <div className="flex items-center justify-between border-b border-space-border pb-3">
-        <div className="flex items-center gap-2">
-          <Terminal size={16} className="text-cosmic-cyan" />
-          <h3 className="font-heading font-bold text-sm tracking-wider uppercase text-cosmic-text">
-            Mission Log // About
-          </h3>
-        </div>
-        <span className="text-[10px] font-mono text-cosmic-muted">ARCHIVE_ACCESS</span>
+    <div className="glass-panel rounded-2xl p-6 border border-cosmic-purple/30 space-y-4">
+      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+        <h3 className="text-sm font-heading font-bold text-white tracking-widest flex items-center gap-2">
+          <Terminal size={16} className="text-cosmic-cyan" /> MISSION LOGS
+        </h3>
+        <span className="text-[10px] font-mono text-cosmic-muted">ENCRYPTED ARCHIVE</span>
       </div>
 
-      {/* Accordion List */}
-      <div className="space-y-2">
-        {logs.map((log) => {
-          const Icon = log.icon;
-          const isOpen = openLog === log.id;
+      <div className="space-y-3">
+        {missions.map((mission) => {
+          const isOpen = activeLog === mission.id;
 
           return (
             <div
-              key={log.id}
-              className="border border-space-border rounded-xl bg-space-bg/40 overflow-hidden transition-colors duration-200 hover:border-cosmic-purple/40"
+              key={mission.id}
+              className={`rounded-xl border transition-all duration-300 overflow-hidden ${
+                isOpen ? 'bg-space-bg/80 border-cosmic-cyan/40 shadow-glow-cyan' : 'bg-space-card/40 border-white/5 hover:border-white/10'
+              }`}
             >
               <button
-                onClick={() => setOpenLog(isOpen ? null : log.id)}
-                className="w-full p-3.5 flex items-center justify-between text-left focus:outline-none"
+                onClick={() => setActiveLog(isOpen ? null : mission.id)}
+                className="w-full p-4 flex items-center justify-between text-left"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-cosmic-cyan font-bold">
-                    {log.id}
-                  </span>
-                  <div className="flex items-center gap-2 text-xs font-heading font-semibold text-cosmic-text">
-                    <Icon size={14} className="text-cosmic-purple" />
-                    <span>{log.title}</span>
-                  </div>
+                  <span className="text-xs font-mono text-cosmic-cyan">{mission.id}</span>
+                  <span className="text-xs font-bold text-white tracking-wide">{mission.title}</span>
                 </div>
-                <ChevronDown
-                  size={16}
-                  className={`text-cosmic-muted transition-transform duration-300 ${
-                    isOpen ? 'rotate-180 text-cosmic-cyan' : ''
-                  }`}
-                />
+                <div className="flex items-center gap-2">
+                  <span className={`text-[9px] font-mono px-2 py-0.5 rounded ${mission.status === 'SUCCESS' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+                    {mission.status}
+                  </span>
+                  <ChevronDown size={14} className={`text-cosmic-muted transition-transform duration-300 ${isOpen ? 'rotate-180 text-cosmic-cyan' : ''}`} />
+                </div>
               </button>
 
               <AnimatePresence>
@@ -77,10 +71,14 @@ export default function MissionLog() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="px-3.5 pb-3.5 pt-1 text-xs text-cosmic-muted border-t border-space-border/40 leading-relaxed font-body"
+                    transition={{ duration: 0.2 }}
+                    className="px-4 pb-4 pt-1 border-t border-white/5 text-xs text-cosmic-muted space-y-2 font-mono"
                   >
-                    {log.content}
+                    <div className="flex justify-between text-[10px] text-cosmic-cyan/70">
+                      <span>TIMESTAMP: {mission.date}</span>
+                      <span>SEC_LEVEL: ALPHA</span>
+                    </div>
+                    <p className="leading-relaxed text-cosmic-text">{mission.detail}</p>
                   </motion.div>
                 )}
               </AnimatePresence>

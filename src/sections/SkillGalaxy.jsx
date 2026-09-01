@@ -1,92 +1,70 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Cpu, Terminal, Shield, Database, Layout, Wrench } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Cpu, Code, Database, Globe } from 'lucide-react';
 
-const skillCategories = [
-  {
-    id: 'frontend',
-    title: 'FRONTEND',
-    icon: Layout,
-    color: 'border-cosmic-cyan text-cosmic-cyan',
-    skills: ['React', 'Next.js', 'Tailwind CSS', 'JavaScript (ES6+)'],
-  },
-  {
-    id: 'backend',
-    title: 'BACKEND & DB',
-    icon: Database,
-    color: 'border-cosmic-purple text-cosmic-purple',
-    skills: ['Node.js', 'Python', 'PostgreSQL', 'REST API'],
-  },
-  {
-    id: 'cyber',
-    title: 'CYBERSECURITY',
-    icon: Shield,
-    color: 'border-cosmic-magenta text-cosmic-magenta',
-    skills: ['Network Security', 'Linux SysAdmin', 'Penetration Testing'],
-  },
+const skillsData = [
+  { name: 'React / Next.js', category: 'Frontend', level: '95%', icon: Code, desc: 'Advanced component architecture, state management, and SSR optimization.' },
+  { name: 'Tailwind CSS', category: 'Styling', level: '92%', icon: Globe, desc: 'Responsive design, custom themes, glassmorphism, and fluid animations.' },
+  { name: 'HTML5 Canvas / WebGL', category: 'Visuals', level: '85%', icon: Cpu, desc: 'Custom particle systems, 3D transformations, and real-time graphics rendering.' },
+  { name: 'Node.js / Databases', category: 'Backend', level: '80%', icon: Database, desc: 'RESTful APIs, database schema design, and secure backend operations.' },
 ];
 
 export default function SkillGalaxy() {
-  const [activeCategory, setActiveCategory] = useState(skillCategories[0].id);
+  const [activeSkill, setActiveSkill] = useState(skillsData[0]);
 
   return (
-    <div className="glass-panel rounded-2xl p-6 space-y-5">
-      {/* Module Title */}
-      <div className="flex items-center justify-between border-b border-space-border pb-3">
-        <div className="flex items-center gap-2">
-          <Cpu size={16} className="text-cosmic-purple" />
-          <h3 className="font-heading font-bold text-sm tracking-wider uppercase text-cosmic-text">
-            Skill Galaxy Map
-          </h3>
-        </div>
-        <span className="text-[10px] font-mono text-cosmic-muted">NODES: ACTIVE</span>
+    <div className="glass-panel rounded-2xl p-5 border border-cosmic-purple/30 space-y-4 shadow-lg">
+      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+        <h3 className="text-sm font-heading font-bold text-white tracking-widest flex items-center gap-2">
+          <Cpu size={16} className="text-cosmic-cyan" /> SKILL GALAXY
+        </h3>
+        <span className="text-[10px] font-mono text-cosmic-muted">SYSTEM SPECS</span>
       </div>
 
-      {/* Category Selectors */}
-      <div className="grid grid-cols-3 gap-2">
-        {skillCategories.map((cat) => {
-          const Icon = cat.icon;
-          const isActive = activeCategory === cat.id;
+      <div className="grid grid-cols-2 gap-2">
+        {skillsData.map((skill) => {
+          const IconComponent = skill.icon;
+          const isSelected = activeSkill.name === skill.name;
 
           return (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`flex flex-col items-center gap-1.5 p-2 rounded-xl border text-[10px] font-mono transition-all duration-200 ${
-                isActive
-                  ? `${cat.color} bg-space-card shadow-glow-purple`
-                  : 'border-space-border bg-space-bg/50 text-cosmic-muted hover:border-cosmic-purple/50'
+            <motion.button
+              key={skill.name}
+              onClick={() => setActiveSkill(skill)}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                isSelected
+                  ? 'bg-cosmic-cyan/15 border-cosmic-cyan/50 shadow-glow-cyan text-white'
+                  : 'bg-space-card/40 border-white/5 text-cosmic-muted hover:border-white/10 hover:text-white'
               }`}
             >
-              <Icon size={16} />
-              <span>{cat.title}</span>
-            </button>
+              <div className="flex items-center justify-between mb-2">
+                <IconComponent size={16} className={isSelected ? 'text-cosmic-cyan' : 'text-cosmic-muted'} />
+                <span className="text-[10px] font-mono text-cosmic-cyan">{skill.level}</span>
+              </div>
+              <span className="text-xs font-bold tracking-wide">{skill.name}</span>
+            </motion.button>
           );
         })}
       </div>
 
-      {/* Galaxy Map Skill Display */}
-      <div className="bg-space-bg/60 border border-space-border/60 rounded-xl p-4 min-h-[160px] flex flex-col justify-center relative overflow-hidden">
-        {/* Subtle Background Circuit Decorative Line */}
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#7C5CFF_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-
-        <div className="flex flex-wrap gap-2 relative z-10">
-          {skillCategories
-            .find((c) => c.id === activeCategory)
-            ?.skills.map((skill, idx) => (
-              <motion.div
-                key={skill}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2, delay: idx * 0.05 }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-space-card/90 border border-cosmic-purple/30 text-xs font-mono text-cosmic-text hover:border-cosmic-cyan hover:shadow-glow-cyan transition duration-200 cursor-default"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-cosmic-cyan animate-pulse" />
-                <span>{skill}</span>
-              </motion.div>
-            ))}
-        </div>
-      </div>
+      {/* Panel Detail Skill Terpilih */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeSkill.name}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+          className="p-3 rounded-lg bg-space-bg/60 border border-cosmic-cyan/20 space-y-1 font-mono text-xs"
+        >
+          <div className="flex justify-between text-[10px] text-cosmic-cyan">
+            <span>DOMAIN: {activeSkill.category.toUpperCase()}</span>
+            <span>PROFICIENCY: {activeSkill.level}</span>
+          </div>
+          <p className="text-cosmic-text text-[11px] leading-relaxed pt-1">{activeSkill.desc}</p>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

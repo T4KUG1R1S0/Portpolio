@@ -8,14 +8,12 @@ import SystemMetrics from './sections/SystemMetrics';
 import MissionLog from './sections/MissionLog';
 import TransmissionCenter from './sections/TransmissionCenter';
 import FloatingDock from './components/navigation/FloatingDock';
-import MobileBottomNav from './components/navigation/MobileBottomNav';
 import './styles/globals.css';
-
 
 export default function App() {
   return (
     <div className="relative min-h-screen text-cosmic-text font-body overflow-x-hidden selection:bg-cosmic-purple selection:text-white pb-24 md:pb-12">
-      {/* Layer 1: Background Canvas */}
+      {/* Layer 1: Background Canvas 4D & Dynamic Lighting */}
       <GalaxyBackground />
 
       {/* Layer 2: Main Interface */}
@@ -55,14 +53,8 @@ export default function App() {
         </main>
       </div>
 
-      {/* Layer 3: Navigation */}
-      {/* Desktop Navigation */}
-      <div className="hidden md:block">
-        <FloatingDock />
-      </div>
-
-      {/* Mobile Navigation */}
-      <MobileBottomNav />
+      {/* Layer 3: Navigation Dock (Otomatis Presisi di Tengah untuk Mobile & Desktop) */}
+      <FloatingDock />
     </div>
   );
 }
