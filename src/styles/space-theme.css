@@ -1,0 +1,49 @@
+@layer utilities {
+  /* Glassmorphism Panel */
+  .glass-panel {
+    background: rgba(15, 15, 30, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(124, 92, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  /* Cosmic Glows */
+  .shadow-glow-cyan {
+    box-shadow: 0 0 20px -3px rgba(77, 235, 255, 0.35);
+  }
+
+  .shadow-glow-purple {
+    box-shadow: 0 0 20px -3px rgba(124, 92, 255, 0.35);
+  }
+
+  /* Hologram Scanline Effect (Opsional) */
+  .scanline {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.3)
+    );
+    background-size: 100% 4px;
+  }
+}
+
+/* Custom Scrollbar Sci-Fi */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080812;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f1f3d;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c5cff;
+}
